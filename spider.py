@@ -17,6 +17,8 @@ class Spider():
 		items = soup.select('#waterfall > li')
 		objs=[]
 		for item in items:
+			if not item:
+				continue
 			comments = '0'
 			comments = item.cite.a.contents[0]
 			if int(comments)<limit:
