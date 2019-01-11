@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>moxing</title>
+    <style type="text/css">
+        body {font-size: 35px;  background: #ebebeb url('');padding-bottom: 30px;}
+        .navbar { min-height: 50px;background: #0697c7; color: #fff; padding: 20px; font-size: 55px; }
+        .content {padding:20px;}
+        .left-box {
+            width: 39.6%;
+            height: calc((100vw - 32px) * 39.6 / 136);
+            display: inline-block;
+            float: left;
+            position: relative;
+            overflow: hidden;
+        }
+        .right-box {
+            width: 60.4%;
+            height: calc((100vw - 32px) * 39.6 / 136);
+            overflow: hidden;
+            display: block;
+            float: left;
+            position: relative;
+        }
+        .posts {height: calc((100vw - 32px) * 39.6 / 136);}
+        .btn-primary {background: #0697c7;padding: 20px 30px;border: 1px solid transparent;border-radius:10px; font-size: 30px;}
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" style="color: #fff">moxing</a>
+    </div>
+    <div class="content">
+        {% for item in infos%}
+        <div class="posts">
+            <a href="{{item.href}}" >
+                <div class="left-box">
+                  <img src="{{item.img}}">
+                </div>
+                <div class="right-box">
+                  <div class="core-box">
+                    <div class="title">{{item.title}}</div>
+                    <div class="archive-list-info__meta">
+                        <span>{{item.comments}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mobile-clear"></div>
+            </a>
+        </div>
+        {% endfor%}
+    </div>
+    <br>
+    <div class='nextpage'>
+        <a href='{{nextpage}}'><button class='btn-primary'>下一页</button></a>
+    </div>
+
+
+
+</body>
+</html>
+
+
