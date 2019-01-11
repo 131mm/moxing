@@ -17,19 +17,21 @@ class Spider():
 		items = soup.select('#waterfall > li')
 		objs=[]
 		for item in items:
-			if not item:
-				continue
-			comments = '0'
-			comments = item.cite.a.contents[0]
-			if int(comments)<limit:
-				continue
-			a = item.a
-			href = a['href']
-			href = self.prefix + href
-			title = a['title']
-			img = item.img['src']
-			obj={'comments':comments, 'href':href, 'title':title, 'img':img}
-			objs.append(obj)
+			try:
+				if not item:
+					continue
+				comments = '0'
+				comments = item.cite.a.contents[0]
+				if int(comments)<limit:
+					continue
+				a = item.a
+				href = a['href']
+				href = self.prefix + href
+				title = a['title']
+				img = item.img['src']
+				obj={'comments':comments, 'href':href, 'title':title, 'img':img}
+				objs.append(obj)
+			except: pass
 		return objs,page
 	def get_limit(self,fid):
 		limits = {
@@ -45,5 +47,5 @@ class Spider():
 
 
 if __name__ == '__main__':
-	app = spider()
-	print(app.get_page_list())
+	app = Spider()
+	print(app.get_page_list(fid='47',page=6))
