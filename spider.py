@@ -32,7 +32,10 @@ class Spider():
 				obj={'comments':comments, 'href':href, 'title':title, 'img':img}
 				objs.append(obj)
 			except: pass
-		return objs,page
+		if objs:
+			return objs,page
+		else:
+			return self.get_page_list(fid=fid,page=str(int(page)+1))
 	def get_limit(self,fid):
 		limits = {
 		'40':50,
