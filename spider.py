@@ -9,13 +9,12 @@ class Spider():
 		self.UA = '''Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'''
 		self.headers = {'user-agent':self.UA}
 
-	def get_page_list(self,fid,page='2'):
+	def get_page_list(self,fid,page=2,objs=[]):
 		limit = self.get_limit(fid=fid)
-		url = '''{}forum.php?mod=forumdisplay&fid={}&page={}'''.format(self.prefix,fid,page)
+		url = '''{}forum.php?mod=forumdisplay&fid={}&page={}'''.format(self.prefix,fid,str(page))
 		web = requests.get(url,headers=self.headers)
 		soup = bs(web.text,'lxml')
 		items = soup.select('#waterfall > li')
-		objs=[]
 		for item in items:
 			try:
 				if not item:
@@ -32,10 +31,15 @@ class Spider():
 				obj={'comments':comments, 'href':href, 'title':title, 'img':img}
 				objs.append(obj)
 			except: pass
-		if objs:
-			return objs,page
+
+		if len(objs)>=5:
+			one = objs.copy()
+			del objs
+			return one,page
 		else:
-			return self.get_page_list(fid=fid,page=str(int(page)+1))
+			page +=1
+			return self.get_page_list(fid=fid,page=page,objs=objs)
+
 	def get_limit(self,fid):
 		limits = {
 		'40':50,
@@ -51,4 +55,4 @@ class Spider():
 
 if __name__ == '__main__':
 	app = Spider()
-	print(app.get_page_list(fid='47',page=6))
+	print(app.get_page_list(fid='41',page=12))
