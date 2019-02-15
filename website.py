@@ -15,6 +15,10 @@ my_spider = spider.Spider()
 
 class Home():
     def GET(self):
+        from tasks import worker
+        fids = ['40','41','43','44','45','46','47']
+        for fid in fids:
+            worker.delay(fid=fid,page=2,objs=[])
         return render.home()
 
 
