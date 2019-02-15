@@ -1,5 +1,10 @@
 import requests
 from bs4 import BeautifulSoup as bs
+from redis import Redis
+import json
+
+
+rds = Redis(host='127.0.0.1',port=6379,db=0)
 
 class Spider():
 
@@ -10,6 +15,18 @@ class Spider():
 		self.headers = {'user-agent':self.UA}
 
 	def get_page_list(self,fid,page=2,objs=[]):
+		from tasks import worker
+		keys = 'moxing_'+fid+'_'+str(page)
+		res = rds.get(keys)
+		if res:
+			objs, page = json.loads(res.decode('utf-8'))
+			worker.delay(fid=fid,page=page+1,objs=[])
+			return objs, page
+		objs, page = self.get_page_list_1(fid=fid,page=page,objs=[])
+		worker.delay(fid=fid,page=page+1,objs=[])
+		return objs, page
+
+	def get_page_list_1(self,fid,page=2,objs=[]):
 		limit = self.get_limit(fid=fid)
 		url = '''{}forum.php?mod=forumdisplay&fid={}&page={}'''.format(self.prefix,fid,str(page))
 		web = requests.get(url,headers=self.headers)
@@ -31,14 +48,11 @@ class Spider():
 				obj={'comments':comments, 'href':href, 'title':title, 'img':img}
 				objs.append(obj)
 			except: pass
-
-		if len(objs)>=5:
-			one = objs.copy()
-			del objs
-			return one,page
+		if len(objs)>=10:
+			return objs,page
 		else:
 			page +=1
-			return self.get_page_list(fid=fid,page=page,objs=objs)
+			return self.get_page_list_1(fid=fid,page=page,objs=objs)
 
 	def get_limit(self,fid):
 		limits = {
@@ -54,5 +68,8 @@ class Spider():
 
 
 if __name__ == '__main__':
+	import pdb
+	pdb.set_trace()
 	app = Spider()
-	print(app.get_page_list(fid='41',page=12))
+	res,page = app.get_page_list(fid='41',page=5)
+	print(res)
