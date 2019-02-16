@@ -3,13 +3,13 @@ from bs4 import BeautifulSoup as bs
 from redis import Redis
 import json
 
-
 rds = Redis(host='127.0.0.1',port=6379,db=0)
 
 class Spider():
 
 	def __init__(self):
-		self.suffix = 'zone'
+		suf = rds.get('moxing_suf')
+		self.suffix = suf.decode() if suf else 'zone'
 		self.prefix = '''https://www.moxing.{}/'''.format(self.suffix)
 		self.UA = '''Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'''
 		self.headers = {'user-agent':self.UA}
