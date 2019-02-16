@@ -10,8 +10,10 @@ app = Celery('tasks',broker='redis://localhost:7777/0')
 spr = Spider()
 @app.task
 def worker(fid,page,objs):
-    infos = spr.get_page_list_1(fid,page,objs)
     keys = 'moxing_'+fid+'_'+str(page)
-    rds.set(keys,json.dumps(infos).encode('utf-8'))
+    res = rds.get(keys)
+    if not res:
+        infos = spr.get_page_list_1(fid,page,objs)
+        rds.set(keys,json.dumps(infos).encode('utf-8'))
     rds.expire(keys,600)
 
