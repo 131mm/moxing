@@ -1,12 +1,12 @@
-import requests
 from bs4 import BeautifulSoup as bs
 from redis import Redis
 import json
+import aiohttp
+import asyncio
 
 rds = Redis(host='127.0.0.1',port=6379,db=0)
 
-class Spider():
-
+class AsyncSpider():
 	def __init__(self):
 		suf = rds.get('moxing_suf')
 		self.suffix = suf.decode() if suf else 'zone'
@@ -14,24 +14,14 @@ class Spider():
 		self.UA = '''Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'''
 		self.headers = {'user-agent':self.UA}
 
-	def get_page_list(self,fid,page=2,objs=[]):
-		from producer import Producer
-		pro = Producer()
-		keys = 'moxing_'+fid+'_'+str(page)
-		res = rds.get(keys)
-		if res:
-			objs, page = json.loads(res.decode('utf-8'))
-			pro.produce(fid=fid,page=page+1)
-			return objs, page
-		objs, page = self.get_page_list_1(fid=fid,page=page,objs=[])
-		pro.produce(fid=fid,page=page+1)
-		return objs, page
-
-	def get_page_list_1(self,fid,page=2,objs=[]):
+	async def get_page_list(self,fid,page=2,start_page=2,objs=[]):
+		print('gotjob:',fid,page)
 		limit = self.get_limit(fid=fid)
 		url = '''{}forum.php?mod=forumdisplay&fid={}&page={}'''.format(self.prefix,fid,str(page))
-		web = requests.get(url,headers=self.headers)
-		soup = bs(web.text,'lxml')
+		async with aiohttp.ClientSession() as session:
+			async with session.get(url) as web:
+				text = await web.text()
+		soup = bs(text,'lxml')
 		items = soup.select('#waterfall > li')
 		for item in items:
 			try:
@@ -50,11 +40,14 @@ class Spider():
 				objs.append(obj)
 			except: pass
 		if len(objs)>=10:
-			return objs,page
+			infos = (objs,page)
+			keys = 'moxing_'+fid+'_'+str(start_page)
+			rds.set(keys,json.dumps(infos).encode('utf-8'))
+			rds.expire(keys,600)
+			print('gotall',fid,start_page,len(objs),'page_now:',page)
 		else:
 			page +=1
-			return self.get_page_list_1(fid=fid,page=page,objs=objs)
-
+			await self.get_page_list(fid=fid,page=page,start_page=start_page,objs=objs)
 	def get_limit(self,fid):
 		limits = {
 		'40':50,
@@ -68,9 +61,16 @@ class Spider():
 		return limits.get(fid)
 
 
+
 if __name__ == '__main__':
-	import pdb
-	pdb.set_trace()
-	app = Spider()
-	res,page = app.get_page_list(fid='41',page=5)
-	print(res)
+	spr = AsyncSpider()
+	async def run():
+		infos = await spr.get_page_list(fid='41',page=2,objs=[])
+		return infos
+
+	co = run()
+	tasks = [asyncio.ensure_future(co)]
+	loop = asyncio.get_event_loop()
+	loop.run_until_complete(asyncio.wait(tasks))
+	#fun_list = (spr.get_page_list_2(fid='41',page=i,objs=[]) for i in range(4,10))
+	#loop.run_until_complete(asyncio.gather(*fun_list))
