@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>moxing</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://www.jsviews.com/download/jsrender.min.js"></script>
+    <style type="text/css">
+        body {font-size: 35px;  background: #ebebeb url('');padding-bottom: 30px;margin: 0;}
+        .navbar { min-height: 50px;background: #0697c7; color: #fff; padding: 20px; font-size: 55px; }
+        .content {padding:20px;}
+        img {width: 94%;}
+        .posts {height: 550px;margin-top: 5px;width: 33.3%;float: left;}
+        .item {padding: 37px; border: 10px; margin: 10px;color: #f27; text-align: center;}
+        .bkimg {display: block;width: 100%;vertical-align: middle;background-size: cover;background-position: center;}
+        .infos {color: #f27;font-size: 20px;}
+        a:link { text-decoration: none;}
+        a:active { text-decoration:blink}
+        a:hover { text-decoration:underline;color: red} 
+        a:visited { text-decoration: none;color: green}
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" style="color: #fff">moxing</a>
+    </div>
+    <div id="result"></div>
+    <script type="text/x-jsrender" id="Tmpl">
+    <div class="content">
+        {{for infos}}
+        <div class="posts">
+            <a href="{{:href}}" >
+                <div class="">
+                  <img src="{{:img}}">
+                  <div class="infos">
+                    <div >{{:title}}</div>
+                    <div >
+                        <span>回复：{{:comments}}</span>
+                    </div>
+                  </div>
+                </div>
+            </a>
+        </div>
+        {{/for}}
+    </div>
+    <div id="next"  onclick="next()" style="clear:both;" href="{{:nextpage}}">
+        <div class="bkimg" style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+        <div class='item'>下一页</div>
+        </div>
+    </div>
+    <div id="this"  href="{{:thispage}}"></div>
+    </script>
+
+    <script>
+        function load(url){
+        $.get(url, function (data) {
+                var js1 = data.replace(/'/g, '"');
+                var da = JSON.parse(js1);
+                var myhtml = $("#Tmpl").render(da);
+                $("#result").html(myhtml);
+            });
+        }
+        var url = '/data?fid=41&page=2';
+        load(url);
+        
+        function next(){
+        
+        var url1 = $('#next').attr("href");
+        load(url1);
+        }
+    </script>
+
+</body>
+</html>
+
+
