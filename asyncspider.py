@@ -41,13 +41,11 @@ class AsyncSpider():
 			except: pass
 		if len(objs)>=10:
 			infos = (objs,page)
-			keys = 'moxing_'+fid+'_'+str(start_page)
-			rds.set(keys,json.dumps(infos).encode('utf-8'))
-			rds.expire(keys,600)
+			return infos
 			print('gotall',fid,start_page,len(objs),'page_now:',page)
 		else:
 			page +=1
-			await self.get_page_list(fid=fid,page=page,start_page=start_page,objs=objs)
+			return await self.get_page_list(fid=fid,page=page,start_page=start_page,objs=objs)
 	def get_limit(self,fid):
 		limits = {
 		'40':50,
@@ -66,7 +64,7 @@ if __name__ == '__main__':
 	spr = AsyncSpider()
 	async def run():
 		infos = await spr.get_page_list(fid='41',page=2,objs=[])
-		return infos
+		print('job done',len(infos[0]))
 
 	co = run()
 	tasks = [asyncio.ensure_future(co)]
