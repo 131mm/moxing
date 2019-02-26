@@ -41,13 +41,14 @@ class AsyncSpider():
 			except: pass
 		if len(objs)>=10:
 			infos = (objs,page)
-			keys = 'moxing_'+fid+'_'+str(start_page)
-			rds.set(keys,json.dumps(infos).encode('utf-8'))
-			rds.expire(keys,600)
+			return infos
+			# keys = 'moxing_'+fid+'_'+str(start_page)
+			# rds.set(keys,json.dumps(infos).encode('utf-8'))
+			# rds.expire(keys,600)
 			print('gotall',fid,start_page,len(objs),'page_now:',page)
 		else:
 			page +=1
-			await self.get_page_list(fid=fid,page=page,start_page=start_page,objs=objs)
+			return await self.get_page_list(fid=fid,page=page,start_page=start_page,objs=objs)
 	def get_limit(self,fid):
 		limits = {
 		'40':50,
@@ -64,15 +65,15 @@ class AsyncSpider():
 
 if __name__ == '__main__':
 	spr = AsyncSpider()
-	async def run():
-		infos = await spr.get_page_list(fid='41',page=2,objs=[])
-		return infos
+	import time
+	async def run(i):
+		start = time.time()
+		infos = await spr.get_page_list(fid='41',page=i,objs=[])
+		print('job',i,'costs:',time.time()-start,'s')
+		print('result:',len(infos[0]))
 
-	co = run()
-	tasks = [asyncio.ensure_future(co)]
+	tasks = [asyncio.ensure_future(run(i)) for i in range(2,100,5)]
 	loop = asyncio.get_event_loop()
 	loop.run_until_complete(asyncio.wait(tasks))
-	for task in tasks:
-		print('Task ret: ', task.result())
 	#fun_list = (spr.get_page_list_2(fid='41',page=i,objs=[]) for i in range(4,10))
 	#loop.run_until_complete(asyncio.gather(*fun_list))

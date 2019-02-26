@@ -24,8 +24,17 @@
             position: relative;
         }
         .posts {height: calc((100vw - 32px) * 39.6 / 136);margin-top: 5px;}
-        .btn-primary {background: #0697c7;padding: 20px 30px;border: 1px solid transparent;border-radius:10px; font-size: 30px;}
-        .nextpage{margin-left: 407px;border: 10px;padding: 10px;}
+        .item {padding: 37px; border: 10px; margin: 10px;color: #f27; text-align: center;}
+        .bkimg {
+            display: block;
+            width: 100%;
+            vertical-align: middle;
+            background-size: cover;
+            background-position: center;}
+        a:link { text-decoration: none;color: blue}
+        a:active { text-decoration:blink}
+        a:hover { text-decoration:underline;color: red} 
+        a:visited { text-decoration: none;color: green}
     </style>
 </head>
 <body>
@@ -52,9 +61,10 @@
         </div>
         {% endfor%}
     </div>
-    <br>
-    <div class='nextpage'>
-        <a href='{{nextpage}}'><button class='btn-primary'>下一页</button></a>
+    <div>
+        <a class="bkimg" href="{{nextpage}}" style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+        <div class='item'>下一页</div>
+        </a>
     </div>
 
 
