@@ -33,40 +33,48 @@
             <div class='item'>无ma40</div>
         </a>
         </div>
-        <div>
-        <a class="bkimg" href="/page?fid=41" style="background-image: url('https://i.loli.net/2019/02/23/5c7129b1edd6c.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=41&page=2')">
+        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c7129b1edd6c.png'); height:133px; width:100%;">
             <div class='item'>有ma41</div>
         </a>
         </div>
-        <div>
-        <a class="bkimg" href="/page?fid=43" style="background-image: url('https://i.loli.net/2019/02/23/5c712bb7cdedb.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=43&page=2')">
+        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712bb7cdedb.png'); height:133px; width:100%;">
             <div class='item'>自拍43</div>
         </a>
         </div>
-        <div>
-        <a class="bkimg" href="/page?fid=44" style="background-image: url('https://i.loli.net/2019/02/23/5c712a19ed7bd.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=44&page=2')">
+        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712a19ed7bd.png'); height:133px; width:100%;">
             <div class='item'>动漫/二次元</div>
         </a>
         </div>
-        <div>
-        <a class="bkimg" href="/page?fid=45" style="background-image: url('https://i.loli.net/2019/02/23/5c712a50a5923.png'); height:133px; width: 100%; ">
+        <div onclick="reload('/data?fid=45&page=2')">
+        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712a50a5923.png'); height:133px; width: 100%; ">
             <div class='item'>欧美45</div>
         </a>
         </div>
-        <div>
-        <a class="bkimg" href="/page?fid=46" style="background-image: url('https://i.loli.net/2019/02/23/5c712a52cdfd1.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=46&page=2')">
+        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712a52cdfd1.png'); height:133px; width:100%;">
             <div class='item'>直播46</div>
         </a>
         </div>
-        <div>
-        <a class="bkimg" href="/page?fid=47" style="background-image: url('https://i.loli.net/2019/02/23/5c712a510bc93.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=47&page=2')">
+        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712a510bc93.png'); height:133px; width:100%;">
             <div class='item'>套图47</div>
         </a>
         </div>
     </div>
 </div>
 </div>
-    <script type="text/x-jsrender" id="Tmpl">
+
+    
+<footer>
+    <div class="Copyright">
+        <span class="copyright" style="text-align: center;display:block;">&copy;  - <a href="https://github.com/131mm/moxing"> 131mm</a></span>
+    </div>
+</footer>
+
+<script type="text/x-jsrender" id="Tmpl">
     <div class="content">
         {{for infos}}
         <div class="posts">
@@ -90,35 +98,28 @@
         </a>
     </div>
     <div id="this"  href="{{:thispage}}"></div>
-    </script>
+</script>
 
-    <script>
-        function load(url){
-            $.get(url, function (data) {
-                var myhtml = $("#Tmpl").render(data);
-                $("#rep").html(myhtml);
-            });
-        };
+<script>
+    function load(url){
+        $.get(url, function (data) {
+            var myhtml = $("#Tmpl").render(data);
+            $("#rep").html(myhtml);
+        });
+    };
 
-        function reload(url){
-            $.get(url, function (data) {
-                var myhtml = $("#Tmpl").render(data);
-                $("#rep").html(myhtml);
-            });
-        };
-       
-        function next(){
-        var url1 = $('#next').attr("href");
-        load(url1);
-        };
-        
-    </script>
-    
-<footer>
-    <div class="Copyright">
-        <span class="copyright" style="text-align: center;display:block;">&copy;  - <a href="https://github.com/131mm/moxing"> 131mm</a></span>
-    </div>
-</footer>
+    function reload(url){
+        $.get(url, function (data) {
+            var myhtml = $("#Tmpl").render(data);
+            $("#rep").html(myhtml);
+        });
+    };
+   
+    function next(){
+    var url1 = $('#next').attr("href");
+    load(url1);
+    };
+</script>
 
 </body>
 </html>
