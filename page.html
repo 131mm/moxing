@@ -25,49 +25,36 @@
         <a href="/" style="color: #fff">moxing</a>
     </div>
     <div id="result"></div>
-    <script type="text/x-jsrender" id="Tmpl">
-    <div class="content">
-        {{for infos}}
-        <div class="posts">
-            <a href="{{:href}}" >
-                <div class="">
-                  <img src="{{:img}}">
-                  <div class="infos">
-                    <div >{{:title}}</div>
-                    <div >
-                        <span>回复：{{:comments}}</span>
-                    </div>
-                  </div>
-                </div>
-            </a>
-        </div>
-        {{/for}}
-    </div>
-    <div id="next"  onclick="next()" style="clear:both;" href="{{:nextpage}}">
-        <a class="bkimg"  href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
-        <div class='item'>下一页</div>
-        </a>
-    </div>
-    <div id="this"  href="{{:thispage}}"></div>
+    <script type="text/javascript" id="content">
+        $("#Header").include("inc_header.html");
     </script>
 
     <script>
+        var path = '/content.html'
+        jQuery.fn.extend({
+        include: function (path) {
+        var _this = $(this);
+        $.get(path, function (html) {
+            _this.replaceWith(html);
+        });
+        return 0;
+    }
+});
         function load(url){
         $.get(url, function (data) {
-                var js1 = data.replace(/'/g, '"');
-                var da = JSON.parse(js1);
-                var myhtml = $("#Tmpl").render(da);
+                var myhtml = $("#Tmpl").render(data);
                 $("#result").html(myhtml);
             });
         }
-        var url = '/data?fid=47&page=2';
-        load(url);
         
         function next(){
-        
         var url1 = $('#next').attr("href");
         load(url1);
         }
+
+        var url = '{{url}}';
+        load(url);
+        
     </script>
 
 </body>

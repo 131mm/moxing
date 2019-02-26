@@ -14,6 +14,19 @@ class AsyncSpider():
 		self.UA = '''Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'''
 		self.headers = {'user-agent':self.UA}
 
+	async def get_page(self,fid,page=2,objs=[]):
+		from producer import Producer
+		pro = Producer()
+		keys = 'moxing_'+fid+'_'+str(page)
+		res = rds.get(keys)
+		if res:
+			objs, page = json.loads(res.decode('utf-8'))
+			pro.produce(fid=fid,page=page+1)
+			return objs, page
+		objs, page = await self.get_page_list(fid=fid,page=page,start_page=page,objs=[])
+		pro.produce(fid=fid,page=page+1)
+		return objs, page
+
 	async def get_page_list(self,fid,page=2,start_page=2,objs=[]):
 		print('gotjob:',fid,page)
 		limit = self.get_limit(fid=fid)

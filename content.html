@@ -1,0 +1,25 @@
+    <script type="text/x-jsrender" id="Tmpl">
+    <div class="content">
+        {{for infos}}
+        <div class="posts">
+            <a href="{{:href}}" >
+                <div class="">
+                  <img src="{{:img}}">
+                  <div class="infos">
+                    <div >{{:title}}</div>
+                    <div >
+                        <span>回复：{{:comments}}</span>
+                    </div>
+                  </div>
+                </div>
+            </a>
+        </div>
+        {{/for}}
+    </div>
+    <div id="next"  onclick="next()" style="clear:both;" href="{{:nextpage}}">
+        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+        <div class='item'>下一页</div>
+        </a>
+    </div>
+    <div id="this"  href="{{:thispage}}"></div>
+    </script>

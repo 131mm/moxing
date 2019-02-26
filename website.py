@@ -1,46 +1,45 @@
-import web
-import json
-import spider
-from web.contrib.template import render_jinja
+from sanic import Sanic
+from sanic.response import json,html,file
+from sanic_jinja2 import SanicJinja2
+import asyncspider
 
-urls=(
-    '/', 'Home',
-    '/page','Page',
-    '/data','Data',
-)
+app = Sanic()
+jinja = SanicJinja2(app)
 
-app=web.application(urls,globals())
-my_spider = spider.Spider()
-render=render_jinja('templates',encoding='utf-8')
+my_spider = asyncspider.AsyncSpider()
 
-class Home():
-    def GET(self):
-        from producer import Producer
-        pro = Producer()
-        fids = ['40','41','43','44','45','46','47']
-        for fid in fids:
-            pro.produce(fid=fid,page=2)
-        return open(r'templates/home.html','r').read()
+@app.route('/content.html')
+async def content(request):
+    return await file('content.html')
 
-class Page():
-    def GET(self):
-        data = web.input()
-        fid = data.get('fid','41')
-        return open(r'templates/page{}.html'.format(fid),'r').read()
+@app.route('/')
+async def home(request):
+    from producer import Producer
+    pro = Producer()
+    fids = ['40','41','43','44','45','46','47']
+    for fid in fids:
+        pro.produce(fid=fid,page=2)
+    return html(open(r'home.html','r').read())
 
-class Data():
-    def GET(self):
-        data = web.input()
+@app.route('/page')
+@jinja.template('page.html')
+async def page(request):
+    data = request.args
+    fid = data.get('fid','41')
+    page = data.get('page','2')
+    return {'url':'/data?fid={}&page={}'.format(fid,page)}
+
+@app.route('/data')
+async def data(request):
+        data = request.args
         fid = data.get('fid','41')
         page = int(data.get('page','2'))
-        infos,nextpage = my_spider.get_page_list(fid=fid,page=page,objs=[])
+        infos,nextpage = await my_spider.get_page_list(fid=fid,page=page,objs=[])
         this_url = '/data?fid={}&page={}'.format(fid,str(page))
         next_url = '/data?fid={}&page={}'.format(fid,str(nextpage+1))
         infos={'infos':infos,'nextpage':next_url,'thispage':this_url}
-        return json.dumps(infos)
+        return json(infos)
 
 
-
-application=app.wsgifunc()
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0',port=8800)
