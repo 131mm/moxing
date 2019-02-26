@@ -19,7 +19,7 @@ async def home(request):
     fids = ['40','41','43','44','45','46','47']
     for fid in fids:
         pro.produce(fid=fid,page=2)
-    return html(open(r'home.html','r').read())
+    return await file('home.html')
 
 @app.route('/page')
 @jinja.template('page.html')
