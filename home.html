@@ -64,7 +64,13 @@
     </div>
 </div>
 </div>
-<div id="Next"></div>
+<div id="Next">
+    <div id="nex"></div>
+</div>
+<div id="Prepare" style="display: none">
+    <div id="pre"></div>
+</div>
+
     
 <footer>
     <div class="Copyright">
@@ -99,31 +105,42 @@
         </div>
     </div>
 </script>
+<script type="text/x-jsrender" id="loading">
+    <div  style="clear:both;">
+        <div class="bkimg"  style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+        <div class='item'>loading</div>
+        </div>
+    </div>
+</script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/jsrender/1.0.2/jsrender.min.js"></script>
 
 <script>
-    function load(url){
+    function preload(url){
         $.get(url, function (data) {
             var myhtml = $("#Tmpl").render(data);
-            $("#rep").append(myhtml);
+            $("#pre").html(myhtml);
             var foot = $("#Foot").render(data);
-            $("#Next").html(foot);
-        });
+            $("#nex").html(foot);
+        })
     };
-
     function reload(url){
         $.get(url, function (data) {
             var myhtml = $("#Tmpl").render(data);
             $("#rep").html(myhtml);
             var foot = $("#Foot").render(data);
-            $("#Next").html(foot);
+            $("#nex").html(foot);
+            var url1 = $('.next').attr("href");
+            preload(url1);
         });
     };
-   
-    function next(){
-    var url1 = $('.next').attr("href");
-    load(url1);
+   function next(){
+        var myhtml = $("#pre").children();
+        $("#rep").append(myhtml);
+        var url1 = $('.next').attr("href");
+        var foot = $('#loading');
+        $("#nex").html(foot);
+        preload(url1);
     };
 </script>
 
