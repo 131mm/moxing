@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>moxing</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://www.jsviews.com/download/jsrender.min.js"></script>
     <style type="text/css">
         body {font-size: 35px;  background: #ebebeb url('');padding-bottom: 30px;margin: 0;}
         .navbar { min-height: 50px;background: #0697c7; color: #fff; padding: 20px; font-size: 55px; }
@@ -66,7 +64,7 @@
     </div>
 </div>
 </div>
-
+<div id="Next"></div>
     
 <footer>
     <div class="Copyright">
@@ -92,19 +90,25 @@
         </div>
         {{/for}}
     </div>
-    <div id="next"  onclick="next()" style="clear:both;" href="{{:nextpage}}">
-        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
-        <div class='item'>下一页</div>
-        </a>
-    </div>
-    <div id="this"  href="{{:thispage}}"></div>
+    
 </script>
+<script type="text/x-jsrender" id="Foot">
+    <div class='next' onclick="next()" style="clear:both;" href="{{:nextpage}}">
+        <div class="bkimg"  style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+        <div class='item'>下一页</div>
+        </div>
+    </div>
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jsrender/1.0.2/jsrender.min.js"></script>
 
 <script>
     function load(url){
         $.get(url, function (data) {
             var myhtml = $("#Tmpl").render(data);
-            $("#rep").html(myhtml);
+            $("#rep").append(myhtml);
+            var foot = $("#Foot").render(data);
+            $("#Next").html(foot);
         });
     };
 
@@ -112,11 +116,13 @@
         $.get(url, function (data) {
             var myhtml = $("#Tmpl").render(data);
             $("#rep").html(myhtml);
+            var foot = $("#Foot").render(data);
+            $("#Next").html(foot);
         });
     };
    
     function next(){
-    var url1 = $('#next').attr("href");
+    var url1 = $('.next').attr("href");
     load(url1);
     };
 </script>

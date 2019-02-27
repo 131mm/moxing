@@ -1,16 +1,10 @@
 from sanic import Sanic
 from sanic.response import json,html,file
-# from sanic_jinja2 import SanicJinja2
 import asyncspider
 
 app = Sanic()
-# jinja = SanicJinja2(app)
 
 my_spider = asyncspider.AsyncSpider()
-
-@app.route('/content.html')
-async def content(request):
-    return await file('content.html')
 
 @app.route('/')
 async def home(request):
@@ -20,14 +14,6 @@ async def home(request):
     for fid in fids:
         pro.produce(fid=fid,page=2)
     return await file('home.html')
-
-# @app.route('/page')
-# @jinja.template('page.html')
-# async def page(request):
-#     data = request.args
-#     fid = data.get('fid','41')
-#     page = data.get('page','2')
-#     return {'url':'/data?fid={}&page={}'.format(fid,page)}
 
 @app.route('/data')
 async def data(request):
