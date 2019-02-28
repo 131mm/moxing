@@ -28,7 +28,6 @@ class AsyncSpider():
 		return objs, page
 
 	async def get_page_list(self,fid,page=2,start_page=2,objs=[]):
-		print('gotjob:',fid,page)
 		limit = self.get_limit(fid=fid)
 		url = '''{}forum.php?mod=forumdisplay&fid={}&page={}'''.format(self.prefix,fid,str(page))
 		async with aiohttp.ClientSession() as session:
@@ -55,7 +54,6 @@ class AsyncSpider():
 		if len(objs)>=10:
 			infos = (objs,page)
 			return infos
-			print('gotall',fid,start_page,len(objs),'page_now:',page)
 		else:
 			page +=1
 			return await self.get_page_list(fid=fid,page=page,start_page=start_page,objs=objs)

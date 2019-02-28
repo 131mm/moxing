@@ -70,8 +70,6 @@
 <div id="Prepare" style="display: none">
     <div id="pre"></div>
 </div>
-
-    
 <footer>
     <div class="Copyright">
         <span class="copyright" style="text-align: center;display:block;">&copy;  - <a href="https://github.com/131mm/moxing"> 131mm</a></span>
@@ -99,7 +97,7 @@
     
 </script>
 <script type="text/x-jsrender" id="Foot">
-    <div class='next' onclick="next()" style="clear:both;" href="{{:nextpage}}">
+    <div id='next' onclick="next()" style="clear:both;" href="{{:nextpage}}">
         <div class="bkimg"  style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
         <div class='item'>下一页</div>
         </div>
@@ -130,15 +128,15 @@
             $("#rep").html(myhtml);
             var foot = $("#Foot").render(data);
             $("#nex").html(foot);
-            var url1 = $('.next').attr("href");
+            var url1 = $('#next').attr("href");
             preload(url1);
         });
     };
    function next(){
         var myhtml = $("#pre").children();
         $("#rep").append(myhtml);
-        var url1 = $('.next').attr("href");
-        var foot = $('#loading');
+        var url1 = $('#next').attr("href");
+        var foot = $('#loading').render();
         $("#nex").html(foot);
         preload(url1);
     };
