@@ -19,8 +19,8 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <a href="/" style="color: #fff;">moxing</a>
+    <div class="navbar" onclick="backhome()">
+        <a style="color: #fff;">moxing</a>
     </div>
 
     <div class="content">
@@ -63,6 +63,9 @@
         </div>
     </div>
 </div>
+</div>
+<div id="home-hide" style="display: none">
+    
 </div>
 <div id="Next">
     <div id="nex"></div>
@@ -114,6 +117,16 @@
 <script src="https://cdn.bootcss.com/jsrender/1.0.2/jsrender.min.js"></script>
 
 <script>
+    function hide(){
+        var home = $(".list");
+        $("#home-hide").html(home)
+    };
+
+    function backhome(){
+        var home = $(".list");
+        $("#rep").html(home);
+    };
+
     function preload(url){
         $.get(url, function (data) {
             var myhtml = $("#Tmpl").render(data);
@@ -123,6 +136,7 @@
         })
     };
     function reload(url){
+        hide();
         $.get(url, function (data) {
             var myhtml = $("#Tmpl").render(data);
             $("#rep").html(myhtml);
