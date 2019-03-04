@@ -125,6 +125,7 @@
     function backhome(){
         var home = $(".list");
         $("#rep").html(home);
+        $("#nex").html('');
     };
 
     function preload(url){
@@ -137,6 +138,8 @@
     };
     function reload(url){
         hide();
+        var foot = $('#loading').render();
+        $("#nex").html(foot);
         $.get(url, function (data) {
             var myhtml = $("#Tmpl").render(data);
             $("#rep").html(myhtml);
