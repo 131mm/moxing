@@ -12,6 +12,9 @@
         .item {padding: 37px; border: 10px; margin: 10px; text-align: center;}
         .bkimg {display: block;width: 100%;vertical-align: middle;background-size: cover;background-position: center;}
         .infos {color: #f27;font-size: 20px;}
+        .jump { text-align: center;}
+        .jumpto { height: 30px;width: 60px; font-size: 35px;}
+        .btn{border:1px solid transparent;color: #fff; background-color:#ec6;text-align:center;font-size:30px;} 
         a:link { text-decoration: none; color: #ec6}
         a:active { text-decoration:blink}
         a:hover { text-decoration:underline;color: red} 
@@ -24,40 +27,26 @@
     <div class="content">
     <div id = "rep">
     <div class="list">
-        <div onclick="reload('/data?fid=40&page=2')">
-        <a class="bkimg" href='#' style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+        <div onclick="reload('/data?fid=40&page=2')" class="bkimg" href='' style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
             <div class='item'>无ma40</div>
-        </a>
         </div>
-        <div onclick="reload('/data?fid=41&page=2')">
-        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c7129b1edd6c.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=41&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c7129b1edd6c.png'); height:133px; width:100%;">
             <div class='item'>有ma41</div>
-        </a>
         </div>
-        <div onclick="reload('/data?fid=43&page=2')">
-        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712bb7cdedb.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=43&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712bb7cdedb.png'); height:133px; width:100%;">
             <div class='item'>自拍43</div>
-        </a>
         </div>
-        <div onclick="reload('/data?fid=44&page=2')">
-        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712a19ed7bd.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=44&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712a19ed7bd.png'); height:133px; width:100%;">
             <div class='item'>动漫/二次元</div>
-        </a>
         </div>
-        <div onclick="reload('/data?fid=45&page=2')">
-        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712a50a5923.png'); height:133px; width: 100%; ">
+        <div onclick="reload('/data?fid=45&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712a50a5923.png'); height:133px; width: 100%; ">
             <div class='item'>欧美45</div>
-        </a>
         </div>
-        <div onclick="reload('/data?fid=46&page=2')">
-        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712a52cdfd1.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=46&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712a52cdfd1.png'); height:133px; width:100%;">
             <div class='item'>直播46</div>
-        </a>
         </div>
-        <div onclick="reload('/data?fid=47&page=2')">
-        <a class="bkimg" href="#" style="background-image: url('https://i.loli.net/2019/02/23/5c712a510bc93.png'); height:133px; width:100%;">
+        <div onclick="reload('/data?fid=47&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712a510bc93.png'); height:133px; width:100%;">
             <div class='item'>套图47</div>
-        </a>
         </div>
     </div>
 </div>
@@ -68,6 +57,7 @@
 <div id="Next">
     <div id="nex"></div>
 </div>
+
 <div id="Prepare" style="display: none">
     <div id="pre"></div>
 </div>
@@ -98,10 +88,15 @@
     
 </script>
 <script type="text/x-jsrender" id="Foot">
-    <div id='next' onclick="next()" style="clear:both;" href="{{:nextpage}}">
+    <div id='next' onclick="next()" style="clear:both;" href="{{:next_url}}">
         <div class="bkimg"  style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
-        <div class='item'>下一页</div>
+        <div class='item'>下一页{{:nextpage}}</div>
         </div>
+    </div>
+    <div class="jump">
+    <button class="btn"  onclick="backhome()" >Home</button>
+    <input class="jumpto" name="page">
+    <button class="btn"  onclick="jump()" >Go</button>
     </div>
 </script>
 <script type="text/x-jsrender" id="loading">
@@ -147,7 +142,7 @@
             preload(url1);
         });
     };
-   function next(){
+    function next(){
         var myhtml = $("#pre").children();
         $("#rep").append(myhtml);
         var url1 = $('#next').attr("href");
@@ -155,6 +150,22 @@
         $("#nex").html(foot);
         preload(url1);
     };
+    function jump(){
+        var page = $('.jumpto').val();
+        var fid = $('#next').attr("href").substring(10,12);
+        var url = '/data?fid='+fid+'&page='+page;
+        $.get(url, function (data) {
+            var myhtml = $("#Tmpl").render(data);
+            $("#rep").html(myhtml);
+            var foot = $("#Foot").render(data);
+            $("#nex").html(foot);
+            var url1 = $('#next').attr("href");
+            var foot = $('#loading').render();
+            $("#nex").html(foot);
+            preload(url1);
+        })
+    };
+
 </script>
 
 </body>

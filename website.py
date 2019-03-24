@@ -21,9 +21,8 @@ async def data(request):
         fid = data.get('fid','41')
         page = int(data.get('page','2'))
         infos,nextpage = await my_spider.get_page(fid=fid,page=page,objs=[])
-        this_url = '/data?fid={}&page={}'.format(fid,str(page))
         next_url = '/data?fid={}&page={}'.format(fid,str(nextpage+1))
-        infos={'infos':infos,'nextpage':next_url,'thispage':this_url}
+        infos={'infos':infos,'nextpage':nextpage,'next_url':next_url}
         return json(infos)
 
 
