@@ -3,30 +3,19 @@ from bs4 import BeautifulSoup as bs
 from redis import Redis
 import json
 
+
 rds = Redis(host='127.0.0.1',port=6379,db=0)
 
 class Spider():
 
 	def __init__(self):
 		suf = rds.get('moxing_suf')
-		self.suffix = suf.decode() if suf else 'zone'
+		self.suffix = suf.decode() if suf else 'fyi'
 		self.prefix = '''https://www.moxing.{}/'''.format(self.suffix)
 		self.UA = '''Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'''
 		self.headers = {'user-agent':self.UA}
 
 	def get_page_list(self,fid,page=2,objs=[]):
-		from tasks import worker
-		keys = 'moxing_'+fid+'_'+str(page)
-		res = rds.get(keys)
-		if res:
-			objs, page = json.loads(res.decode('utf-8'))
-			worker.delay(fid=fid,page=page+1,objs=[])
-			return objs, page
-		objs, page = self.get_page_list_1(fid=fid,page=page,objs=[])
-		worker.delay(fid=fid,page=page+1,objs=[])
-		return objs, page
-
-	def get_page_list_1(self,fid,page=2,objs=[]):
 		limit = self.get_limit(fid=fid)
 		url = '''{}forum.php?mod=forumdisplay&fid={}&page={}'''.format(self.prefix,fid,str(page))
 		web = requests.get(url,headers=self.headers)
@@ -51,8 +40,7 @@ class Spider():
 		if len(objs)>=10:
 			return objs,page
 		else:
-			page +=1
-			return self.get_page_list_1(fid=fid,page=page,objs=objs)
+			return self.get_page_list(fid=fid,page=page+1,objs=objs)
 
 	def get_limit(self,fid):
 		limits = {

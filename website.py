@@ -1,36 +1,42 @@
 import web
 import spider
-from web.contrib.template import render_jinja
+import json
+from redis import Redis
+from producer import Producer
 
 urls=(
     '/', 'Home',
-    '/page', 'Page',
+    '/data', 'Data',
 )
 
 app=web.application(urls,globals())
-
-render=render_jinja('templates',encoding='utf-8')
-
 my_spider = spider.Spider()
+pro = Producer()
+rds = Redis(host='localhost',port=6379) 
 
 class Home():
     def GET(self):
-        from tasks import worker
         fids = ['40','41','43','44','45','46','47']
         for fid in fids:
-            worker.delay(fid=fid,page=2,objs=[])
-        return render.home()
+            pro.produce(fid=fid,page=2)
+        return open(r'./home.html', 'r').read()
 
 
-class Page():
+class Data():
     def GET(self):
         data = web.input()
         fid = data.get('fid','41')
         page = int(data.get('page','2'))
-        infos,nextpage = my_spider.get_page_list(fid=fid,page=page,objs=[])
-        next_url = '/page?fid={}&page={}'.format(fid,str(nextpage+1))
-        infos={'infos':infos,'nextpage':next_url}
-        return render.page(infos)
+        keys = 'moxing_'+fid+'_'+str(page)
+        res = rds.get(keys)
+        if res:
+            infos,nextpage = json.loads(res.decode('utf-8'))
+        else:
+            infos,nextpage = my_spider.get_page_list(fid=fid,page=page,objs=[])
+        pro.produce(fid=fid,page=nextpage+1)
+        next_url = '/data?fid={}&page={}'.format(fid,str(nextpage+1))
+        infos={'infos':infos,'nextpage':nextpage,'next_url':next_url}
+        return json.dumps(infos)
 
 application=app.wsgifunc()
 if __name__ == '__main__':

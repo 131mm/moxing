@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>moxing</title>
+    <style type="text/css">
+        body {font-size: 35px;  background: #ebebeb url('');padding-bottom: 30px;margin: 0; color: #ec6;}
+        .navbar { min-height: 50px;background: #ec6; color: #fff; padding: 20px; font-size: 55px; }
+        .content {padding:20px;}
+        img {width: 94%;}
+        .posts {height: 550px;margin-top: 5px;width: 33.3%;float: left;}
+        .item {padding: 37px; border: 10px; margin: 10px; text-align: center;}
+        .bkimg {display: block;width: 100%;vertical-align: middle;background-size: cover;background-position: center;}
+        .infos {color: #f27;font-size: 20px;}
+        .jump { text-align: center;}
+        .jumpto { height: 80px;width: 200px; font-size: 80px;}
+        .btn{border:1px solid transparent;color: #fff; background-color:#ec6;text-align:center;font-size:80px;} 
+        a:link { text-decoration: none; color: #ec6}
+        a:active { text-decoration:blink}
+        a:hover { text-decoration:underline;color: red} 
+        a:visited { text-decoration: none;color: #f20}
+    </style>
+</head>
+<body>
+    <div class="navbar" onclick="backhome()">moxing</div>
+
+    <div class="content">
+    <div id = "rep">
+    <div class="list">
+        <div onclick="reload('/data?fid=40&page=2')" class="bkimg" href='' style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+            <div class='item'>无ma40</div>
+        </div>
+        <div onclick="reload('/data?fid=41&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c7129b1edd6c.png'); height:133px; width:100%;">
+            <div class='item'>有ma41</div>
+        </div>
+        <div onclick="reload('/data?fid=43&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712bb7cdedb.png'); height:133px; width:100%;">
+            <div class='item'>自拍43</div>
+        </div>
+        <div onclick="reload('/data?fid=44&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712a19ed7bd.png'); height:133px; width:100%;">
+            <div class='item'>动漫/二次元</div>
+        </div>
+        <div onclick="reload('/data?fid=45&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712a50a5923.png'); height:133px; width: 100%; ">
+            <div class='item'>欧美45</div>
+        </div>
+        <div onclick="reload('/data?fid=46&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712a52cdfd1.png'); height:133px; width:100%;">
+            <div class='item'>直播46</div>
+        </div>
+        <div onclick="reload('/data?fid=47&page=2')" class="bkimg" href="" style="background-image: url('https://i.loli.net/2019/02/23/5c712a510bc93.png'); height:133px; width:100%;">
+            <div class='item'>套图47</div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="home-hide" style="display: none">
+    
+</div>
+<div id="Next">
+    <div id="nex"></div>
+</div>
+
+<div id="Prepare" style="display: none">
+    <div id="pre"></div>
+</div>
+<footer>
+    <div>
+        <span style="text-align: center;display:block;">&copy;  - <a href="https://github.com/131mm/moxing"> 131mm</a></span>
+    </div>
+</footer>
+
+<script type="text/x-jsrender" id="Tmpl">
+    <div class="content">
+        {{for infos}}
+        <div class="posts">
+            <a href="{{:href}}" target="_blank">
+                <div class="">
+                  <img src="{{:img}}">
+                  <div class="infos">
+                    <div >{{:title}}</div>
+                    <div >
+                        <span>回复：{{:comments}}</span>
+                    </div>
+                  </div>
+                </div>
+            </a>
+        </div>
+        {{/for}}
+    </div>
+    
+</script>
+<script type="text/x-jsrender" id="Foot">
+    <div id='next' onclick="next()" style="clear:both;" href="{{:next_url}}">
+        <div class="bkimg"  style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+        <div class='item'>下一页{{:nextpage}}</div>
+        </div>
+    </div>
+    <div class="jump">
+    <button class="btn"  onclick="backhome()" >Home</button>
+    <input class="jumpto" name="page">
+    <button class="btn"  onclick="jump()" >Go</button>
+    </div>
+</script>
+<script type="text/x-jsrender" id="loading">
+    <div  style="clear:both;">
+        <div class="bkimg"  style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
+        <div class='item'>loading</div>
+        </div>
+    </div>
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jsrender/1.0.2/jsrender.min.js"></script>
+
+<script>
+    function hide(){
+        var home = $(".list");
+        $("#home-hide").html(home)
+    };
+
+    function backhome(){
+        var home = $(".list");
+        $("#rep").html(home);
+        $("#nex").html('');
+    };
+
+    function preload(url){
+        $.get(url, function (data) {
+            data = JSON.parse(data);
+            var myhtml = $("#Tmpl").render(data);
+            $("#pre").html(myhtml);
+            var foot = $("#Foot").render(data);
+            $("#nex").html(foot);
+        })
+    };
+    function reload(url){
+        hide();
+        var foot = $('#loading').render();
+        $("#nex").html(foot);
+        $.get(url, function (data) {
+            data = JSON.parse(data);
+            var myhtml = $("#Tmpl").render(data);
+            $("#rep").html(myhtml);
+            var foot = $("#Foot").render(data);
+            $("#nex").html(foot);
+            var url1 = $('#next').attr("href");
+            preload(url1);
+        });
+    };
+    function next(){
+        var myhtml = $("#pre").children();
+        $("#rep").append(myhtml);
+        var url1 = $('#next').attr("href");
+        var foot = $('#loading').render();
+        $("#nex").html(foot);
+        preload(url1);
+    };
+    function jump(){
+        var page = $('.jumpto').val();
+        var fid = $('#next').attr("href").substring(10,12);
+        var url = '/data?fid='+fid+'&page='+page;
+        $.get(url, function (data) {
+            data = JSON.parse(data);
+            var myhtml = $("#Tmpl").render(data);
+            $("#rep").html(myhtml);
+            var foot = $("#Foot").render(data);
+            $("#nex").html(foot);
+            var url1 = $('#next').attr("href");
+            var foot = $('#loading').render();
+            $("#nex").html(foot);
+            preload(url1);
+        })
+    };
+
+</script>
+
+</body>
+</html>
