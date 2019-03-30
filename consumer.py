@@ -3,16 +3,14 @@ from spider import Spider
 import json
 import time
 import threading
+import gc
 
 rds = Redis(host='localhost',port=6379) 
 spr = Spider()
 def worker():
 	while True:
-		msg = rds.rpop('moxing_msg')
-		if not msg:
-			time.sleep(1)
-			continue
-		msg = msg.decode('utf-8')
+		msg = rds.brpop('moxing_msg')
+		msg = msg[1].decode('utf-8')
 		argues = msg.split('_')
 		fid, page= argues[0],int(argues[1])
 		keys = 'moxing_'+fid+'_'+str(page)
@@ -26,6 +24,9 @@ def worker():
 			rds.set(keys,json.dumps(infos).encode('utf-8'))
 			rds.expire(keys,600)
 			print('job done',msg,len(infos[0]))
+			del infos
+		del res
+		gc.collect()
 
 		end = time.time()
 		print('end:  ',fid,page,end-start,'s')
