@@ -4,7 +4,9 @@ import json
 import time
 import threading
 import gc
+import logging
 
+logging.basicConfig(filename='work.log',format='%(levelname)s:%(asctime)s %(message)s', level=logging.DEBUG)
 rds = Redis(host='localhost',port=6379) 
 spr = Spider()
 def worker():
@@ -15,21 +17,20 @@ def worker():
 		fid, page= argues[0],int(argues[1])
 		keys = 'moxing_'+fid+'_'+str(page)
 
+		logging.info('start '+fid+'-'+str(page))
 		start = time.time()
-		print('start:',fid,page)
-		
 		res = rds.get(keys)
 		if not res:
+			logging.info('getting '+fid+'-'+str(page))
 			infos = spr.get_page_list(fid=fid,page=page,objs=[])
 			rds.set(keys,json.dumps(infos).encode('utf-8'))
 			rds.expire(keys,600)
-			print('job done',msg,len(infos[0]))
 			del infos
 		del res
 		gc.collect()
 
 		end = time.time()
-		print('end:  ',fid,page,end-start,'s')
+		logging.info('end '+fid+'-'+str(page)+' '+str(end-start)+'s')
 
 def main():
 	loop = []
