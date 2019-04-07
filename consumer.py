@@ -16,8 +16,6 @@ def worker():
 		argues = msg.split('_')
 		fid, page= argues[0],int(argues[1])
 		keys = 'moxing_'+fid+'_'+str(page)
-
-		logging.info('start '+fid+'-'+str(page))
 		start = time.time()
 		res = rds.get(keys)
 		if not res:
