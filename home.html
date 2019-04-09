@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <title>moxing</title>
     <style type="text/css">
-        body {font-size: 35px;  background: #ebebeb url('');padding-bottom: 30px;margin: 0; color: #ec6;}
-        .navbar { min-height: 50px;background: #ec6; color: #fff; padding: 20px; font-size: 55px; }
+        body {font-size: 35px;  background: #ebebeb url('');padding-bottom: 30px;margin: 0; color: #001;}
+        .navbar { min-height: 50px;background: #069644; color: #fff; padding: 20px; font-size: 55px; }
         .content {padding:20px;}
         img {width: 94%;}
         .posts {height: 550px;margin-top: 5px;width: 33.3%;float: left;}
         .item {padding: 37px; border: 10px; margin: 10px; text-align: center;}
         .bkimg {display: block;width: 100%;background-size: cover;background-position: center;}
-        .infos {color: #f27;font-size: 20px;}
-        .jump { text-align: center;}
-        .jumpto { height: 80px;width: 200px; font-size: 80px;}
-        .btn{border:1px solid transparent;color: #fff; background-color:#ec6;text-align:center;font-size:80px;} 
+        .infos {color: #000;font-size: 20px;}
+        .jump { text-align: center;font-size: 80px;}
+        .btn-pr {background: #069644;font-size: 45px;padding: 20px 30px;border: 1px solid transparent;border-radius:10px; }
+        input { border: 1px solid #ccc;font-size: 45px;width: 100px; border-radius: 10px;margin: 0px;padding: 12px;}
         a:link { text-decoration: none; color: #ec6}
         a:active { text-decoration:blink}
         a:hover { text-decoration:underline;color: red} 
@@ -94,9 +94,9 @@
         </div>
     </div>
     <div class="jump">
-    <button class="btn"  onclick="backhome()" >Home</button>
+    <button class="btn-pr"  onclick="backhome()" >Home</button>
     <input class="jumpto" name="page">
-    <button class="btn"  onclick="jump()" ><a href="#" style="color: #fff" >Go</a></button>
+    <button class="btn-pr"  onclick="jump()" ><a href="#" >Go</a></button>
     </div>
 </script>
 <script type="text/x-jsrender" id="loading">
