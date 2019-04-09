@@ -88,10 +88,8 @@
     
 </script>
 <script type="text/x-jsrender" id="Foot">
-    <div id='next' onclick="next()" style="clear:both;" href="{{:next_url}}">
-        <div class="bkimg"  style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
-        <div class='item'>下一页{{:nextpage}}</div>
-        </div>
+    <div id='next' class='jump';onclick="next()" style="clear:both;" href="{{:next_url}}">
+    <button class='btn-pr'>下一页{{:nextpage}}</button>
     </div>
     <div class="jump">
     <button class="btn-pr"  onclick="backhome()" >Home</button>
