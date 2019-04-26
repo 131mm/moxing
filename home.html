@@ -6,11 +6,12 @@
     <style type="text/css">
         body {font-size: 35px;  background: #ebebeb url('');padding-bottom: 30px;margin: 0; color: #001;}
         .navbar { min-height: 50px;background: #069644; color: #fff; padding: 20px; font-size: 55px; }
-        img {width: 94%;}
+        img {width: 94%;text-align: center;}
+        .content {padding-left: 10px;}
         .posts {height: 550px;margin-top: 5px;width: 33.3%;float: left;}
         .item {padding: 37px; border: 10px; margin: 10px; text-align: center;}
         .bkimg {width: 100%;padding: 10px;margin: 1px #de3;border-bottom: 1px solid #069644;}
-        .infos {color: #000;font-size: 20px;}
+        .infos {width:94%;color: #000;font-size: 20px;}
         .jump { text-align: center;font-size: 80px;}
         .btn-pr {background: #069644;font-size: 45px;padding: 20px 30px;border: 1px solid transparent;border-radius:10px; }
         input { border: 1px solid #ccc;font-size: 45px;width: 100px; border-radius: 10px;margin: 0px;padding: 12px;}
@@ -23,7 +24,6 @@
 <body>
     <div class="navbar" onclick="backhome()">moxing</div>
 
-    <div class="content">
     <div id = "rep">
     <div class="list">
         <div class="bkimg" onclick="reload('/data?fid=40&page=2')" >
@@ -48,10 +48,8 @@
             <div class='item'>套图47</div>
         </div>
     </div>
-</div>
-</div>
-<div id="home-hide" style="display: none">
-    
+    </div>
+<div id="home-hide" style="display: none">    
 </div>
 <div id="Next">
     <div id="nex"></div>
@@ -99,8 +97,7 @@
 </script>
 <script type="text/x-jsrender" id="loading">
     <div  style="clear:both;">
-        <div class="bkimg"  style="background-image: url('https://i.loli.net/2019/02/23/5c7127d2d7405.png'); height:133px; width:100%; ">
-        <div class='item'>loading</div>
+        <div class="bkimg" ><div class='item'>loading</div>
         </div>
     </div>
 </script>
