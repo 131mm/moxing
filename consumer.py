@@ -19,13 +19,14 @@ def worker():
 		start = time.time()
 		res = rds.get(keys)
 		if not res:
-			logging.info('getting '+fid+'-'+str(page))
 			infos = spr.get_page_list(fid=fid,page=page,objs=[])
+			# print(infos)
 			rds.set(keys,json.dumps(infos).encode('utf-8'))
 			rds.expire(keys,600)
 			del infos
-		del res
-		gc.collect()
+		else: 
+			print('exists',keys)
+			del res
 
 		end = time.time()
 		logging.info('end '+fid+'-'+str(page)+' '+str(end-start)+'s')

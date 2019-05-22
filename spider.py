@@ -59,5 +59,4 @@ if __name__ == '__main__':
 	import pdb
 	pdb.set_trace()
 	app = Spider()
-	res,page = app.get_page_list(fid='41',page=5)
-	print(res)
+	print(app.get_page_list('40'))
