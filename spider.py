@@ -15,7 +15,9 @@ class Spider():
 		self.UA = '''Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'''
 		self.headers = {'user-agent':self.UA}
 
-	def get_page_list(self,fid,page=2,objs=[]):
+	def get_page_list(self,fid,page=2,objs=[],count=1):
+		if count>20:
+			return objs,page
 		limit = self.get_limit(fid=fid)
 		url = '''{}forum.php?mod=forumdisplay&fid={}&page={}'''.format(self.prefix,fid,str(page))
 		web = requests.get(url,headers=self.headers)
@@ -40,7 +42,7 @@ class Spider():
 		if len(objs)>=10:
 			return objs,page
 		else:
-			return self.get_page_list(fid=fid,page=page+1,objs=objs)
+			return self.get_page_list(fid=fid,page=page+1,objs=objs,count=count+1)
 
 	def get_limit(self,fid):
 		limits = {
@@ -59,4 +61,4 @@ if __name__ == '__main__':
 	import pdb
 	pdb.set_trace()
 	app = Spider()
-	print(app.get_page_list('40'))
+	print(app.get_page_list('46'))
