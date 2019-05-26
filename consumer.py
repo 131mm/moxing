@@ -22,7 +22,7 @@ def worker():
 			infos = spr.get_page_list(fid=fid,page=page,objs=[])
 			# print(infos)
 			rds.set(keys,json.dumps(infos).encode('utf-8'))
-			rds.expire(keys,600)
+			rds.expire(keys,3600)
 			del infos
 		else: 
 			print('exists',keys)

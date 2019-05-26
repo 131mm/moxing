@@ -16,7 +16,7 @@ rds = Redis(host='localhost',port=6379)
 
 class Home():
     def GET(self):
-        fids = ['40','41','43','44','45','46','47']
+        fids = ['40','41','43','44','45','47']
         for fid in fids:
             pro.produce(fid=fid,page=2)
         return open(r'./home.html', 'r').read()
