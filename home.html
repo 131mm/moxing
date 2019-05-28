@@ -11,47 +11,26 @@
         img {width: 94%;text-align: center;}
         .content {padding-left: 10px;}
         .posts {height: 550px;margin-top: 5px;width: 33.3%;float: left;}
-        .item {padding: 37px; border: 10px; margin: 10px; text-align: center;}
-        .bkimg {width: 100%;padding: 10px;margin: 1px #de3;border-bottom: 1px solid #069644;}
+        .item {padding: 37px; border: 10px; margin: 10px; text-align: center;border-bottom: 1px solid #069644;}
         .infos {width:94%;color: #000;font-size: 20px;}
         .jump { text-align: center;font-size: 80px;clear: both;}
-        .btn-pr {background: #069644;font-size: 45px;padding: 20px 30px;border: 1px solid transparent;border-radius:10px; }
+        .btn-pr {background: #069644;color:#ebebeb;font-size: 45px;padding: 20px 30px;border: 1px solid transparent;border-radius:10px; }
         input { border: 1px solid #ccc;font-size: 45px;width: 100px; border-radius: 10px;margin: 0px;padding: 12px;}
         a:link { text-decoration: none; color: #ec6}
         a:active { text-decoration:blink}
-        a:hover { text-decoration:underline;color: red} 
-        a:visited { text-decoration: none;color: #f20}
+        a:visited { text-decoration: none;color: #069644}
     </style>
 </head>
 <body>
-    
     <div id = "rep">
         <div  class="navbar" v-on:click="togle"> 
             <div id="Header">moxing</div>
         </div>
-        <section v-if="hide" v-on:click="togle">
-            <div class="bkimg" v-on:click="reload(40)" >
-                <div class='item'>无ma40</div>
+        <div v-if="hide" v-on:click="togle">
+            <div  v-for="item of items">
+                <div class='item'  v-on:click="reload(item.fid)">{{item.title}}</div>
             </div>
-            <div class="bkimg" v-on:click="reload(41)" >
-                <div class='item'>有ma41</div>
-            </div>
-            <div class="bkimg" v-on:click="reload(43)" >
-                <div class='item'>自拍43</div>
-            </div>
-            <div class="bkimg" v-on:click="reload(44)">
-                <div class='item'>动漫/二次元</div>
-            </div>
-            <div class="bkimg" v-on:click="reload(45)">
-                <div class='item'>欧美45</div>
-            </div>
-            <div class="bkimg" v-on:click="reload(46)" >
-                <div class='item'>直播46</div>
-            </div>
-            <div class="bkimg" v-on:click="reload(47)">
-                <div class='item'>套图47</div>
-            </div>
-        </section>
+        </div>
         <div class="content">
             <div class="posts" v-for="post in infos">
                 <a v-bind:href="post.href" target="_blank">
@@ -59,21 +38,17 @@
                         <img v-bind:src="post.img">
                         <div class="infos">
                         <div >{{post.title}}</div>
-                        <div >
-                            <span>回复：{{post.comments}}</span>
-                        </div>
+                        <div >回复：{{post.comments}}</div>
                         </div>
                     </div>
                 </a>
             </div>
         </div>
-        <footer>
         <div class="jump" v-if="!hide">
             <button class='btn-pr' v-on:click="next">Next: {{nextpage}}</button>
             <input class="jumpto" v-model="jump_page">
             <button class="btn-pr"  v-on:click="jump" >Go</button>
-        </div>     
-        </footer>
+        </div>
     </div>
 <script>
     var app = new Vue({
@@ -86,7 +61,16 @@
             pre_data:{},
             jump_page:2,
             fid:'',
-            hide:true
+            hide:true,
+            items:[
+                {title:'无码',fid:40},
+                {title:'有码',fid:41},
+                {title:'自拍',fid:43},
+                {title:'动漫/二次元',fid:44},
+                {title:'欧美',fid:45},
+                {title:'直播',fid:46},
+                {title:'写真',fid:47},
+            ]
         }},
     methods:{
         togle: function(event){
