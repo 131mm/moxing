@@ -21,47 +21,37 @@
         a:active { text-decoration:blink}
         a:hover { text-decoration:underline;color: red} 
         a:visited { text-decoration: none;color: #f20}
-        #tm {display: none;}
-        #tm ~:not(checked) ~ section {display: block;}
-        #tm:checked ~ section {display: none;}
-        #tm ~:not(checked) ~ footer {display: none;}
-        #tm:checked ~ footer {display: block;}
     </style>
 </head>
 <body>
     
     <div id = "rep">
-        <input type="checkbox" id="tm" />
-        <div  class="navbar"> 
-            <label for="tm">
-                <div id="Header">moxing</div>
-            </label> 
+        <div  class="navbar" v-on:click="togle"> 
+            <div id="Header">moxing</div>
         </div>
-        <section >
-            <label for="tm">
-                <div class="bkimg" v-on:click="reload(40)" >
-                    <div class='item'>无ma40</div>
-                </div>
-                <div class="bkimg" v-on:click="reload(41)" >
-                    <div class='item'>有ma41</div>
-                </div>
-                <div class="bkimg" v-on:click="reload(43)" >
-                    <div class='item'>自拍43</div>
-                </div>
-                <div class="bkimg" v-on:click="reload(44)">
-                    <div class='item'>动漫/二次元</div>
-                </div>
-                <div class="bkimg" v-on:click="reload(45)">
-                    <div class='item'>欧美45</div>
-                </div>
-                <div class="bkimg" v-on:click="reload(46)" >
-                    <div class='item'>直播46</div>
-                </div>
-                <div class="bkimg" v-on:click="reload(47)">
-                    <div class='item'>套图47</div>
-                </div>
-            </label>
-            </section>
+        <section v-if="hide" v-on:click="togle">
+            <div class="bkimg" v-on:click="reload(40)" >
+                <div class='item'>无ma40</div>
+            </div>
+            <div class="bkimg" v-on:click="reload(41)" >
+                <div class='item'>有ma41</div>
+            </div>
+            <div class="bkimg" v-on:click="reload(43)" >
+                <div class='item'>自拍43</div>
+            </div>
+            <div class="bkimg" v-on:click="reload(44)">
+                <div class='item'>动漫/二次元</div>
+            </div>
+            <div class="bkimg" v-on:click="reload(45)">
+                <div class='item'>欧美45</div>
+            </div>
+            <div class="bkimg" v-on:click="reload(46)" >
+                <div class='item'>直播46</div>
+            </div>
+            <div class="bkimg" v-on:click="reload(47)">
+                <div class='item'>套图47</div>
+            </div>
+        </section>
         <div class="content">
             <div class="posts" v-for="post in infos">
                 <a v-bind:href="post.href" target="_blank">
@@ -78,8 +68,8 @@
             </div>
         </div>
         <footer>
-        <div class="jump">
-            <button class='btn-pr' v-on:click="next">下一页{{nextpage}}</button>
+        <div class="jump" v-if="!hide">
+            <button class='btn-pr' v-on:click="next">Next: {{nextpage}}</button>
             <input class="jumpto" v-model="jump_page">
             <button class="btn-pr"  v-on:click="jump" >Go</button>
         </div>     
@@ -96,8 +86,13 @@
             pre_data:{},
             jump_page:2,
             fid:'',
+            hide:true
         }},
     methods:{
+        togle: function(event){
+            if (this.hide){this.hide=false}
+            else {this.hide=true}
+        },
         loadinfos: function(data){
             for (post of data.infos){
                 this.infos.push(post)
