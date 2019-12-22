@@ -10,7 +10,7 @@ class Spider():
 
 	def __init__(self):
 		suf = rds.get('moxing_suf')
-		self.suffix = suf.decode() if suf else 'fyi'
+		self.suffix = suf.decode() if suf else 'one'
 		self.prefix = '''https://www.moxing.{}/'''.format(self.suffix)
 		self.UA = '''Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'''
 		self.headers = {'user-agent':self.UA}
@@ -36,6 +36,8 @@ class Spider():
 				href = self.prefix + href
 				title = a['title']
 				img = item.img['src']
+				if not img.startswith('http'):
+					img = self.prefix + img
 				obj={'comments':comments, 'href':href, 'title':title, 'img':img}
 				objs.append(obj)
 			except: pass
@@ -58,7 +60,5 @@ class Spider():
 
 
 if __name__ == '__main__':
-	import pdb
-	pdb.set_trace()
 	app = Spider()
 	print(app.get_page_list('46'))
